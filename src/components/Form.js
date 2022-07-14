@@ -1,44 +1,45 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Form extends React.Component {
 /*  constructor() {
     super();
     this.state = {
-      nomeCarta: '',
-      descCarta: '',
-      atriCarta1: 0,
-      atriCarta2: 0,
-      atriCarta3: 0,
-      image: '',
-      rare: false,
-      trunfo: false,
+      cardName: '',
+      cardDescription: '',
+      cardAttr1: 0,
+      cardAttr2: 0,
+      cardAttr3: 0,
+      cardImage: '',
+      cardRare: false,
+      cardTrunfo: false,
 
     };
   }
 
-  /*    fnomeCarta = (event) => {
-            this.setState({ nomeCarta: event.target.value })
+  /*    fcardName = (event) => {
+            this.setState({ cardName: event.target.value })
         }
-        fdescCarta = (event) => {
-            this.setState({ descCarta: event.target.value })
+        fcardDescription = (event) => {
+            this.setState({ cardDescription: event.target.value })
         }
-        fatriCarta1 = (event) => {
-            this.setState({ atriCarta1: event.target.value })
+        fcardAttr1 = (event) => {
+            this.setState({ cardAttr1: event.target.value })
         }
-        fatriCarta2 = (event) => {
-            this.setState({ atriCarta2: event.target.value })
+        fcardAttr2 = (event) => {
+            this.setState({ cardAttr2: event.target.value })
         }
-        fatriCarta3 = (event) => {
-            this.setState({ atriCarta3: event.target.value })
+        fcardAttr3 = (event) => {
+            this.setState({ cardAttr3: event.target.value })
         }
-        fimage = (event) => {
-            this.setState({ image: event.target.value })
+        fcardImage = (event) => {
+            this.setState({ cardImage: event.target.value })
         }
-        frare = (event) => {
-            this.setState({ rare: event.target.selected })
+        fcardRare = (event) => {
+            this.setState({ cardRare: event.target.selected })
         }
-        ftrunfo = (event) => {
-            this.setState({ trunfo: event.target.checked })
+        fcardTrunfo = (event) => {
+            this.setState({ cardTrunfo: event.target.checked })
         }
 
     fChange = (event) => {
@@ -51,101 +52,113 @@ class Form extends React.Component {
     }
 */
   render() {
-    /* const {
-      nomeCarta,
-      descCarta,
-      atriCarta1,
-      atriCarta2,
-      atriCarta3,
-      image,
-      rare,
-      trunfo,
-    } = this.state;
-*/
+    const {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardRare,
+      cardTrunfo,
+      hasTrunfo,
+      isSaveButtonDisabled,
+      onInputChange,
+      onSaveButtonClick,
+    } = this.props;
+
     return (
       <form>
 
-        <label htmlFor="nomeCarta">
+        <label htmlFor="cardName">
           Nome
           <input
             type="text"
-            name="nomeCarta"
+            name="cardName"
             data-testid="name-input"
-            //            onChange={ this.fChange }
-            //            value={ nomeCarta }
+            onChange={ onInputChange }
+            value={ cardName }
           />
         </label>
 
-        <label htmlFor="descCarta">
+        <label htmlFor="cardDescription">
           Descrição
           <input
             type="textarea"
-            name="descCarta"
+            name="cardDescription"
             data-testid="description-input"
-            //            onChange={ this.fChange }
-            //          value={ descCarta }
+            onChange={ onInputChange }
+            value={ cardDescription }
           />
         </label>
 
-        <label htmlFor="atriCarta1">
+        <label htmlFor="cardAttr1">
           Attr01
           <input
             type="number"
-            name="atriCarta1"
+            name="cardAttr1"
             data-testid="attr1-input"
-            //        onChange={ this.fChange }
-            //      value={ atriCarta1 }
+            onChange={ onInputChange }
+            value={ cardAttr1 }
           />
         </label>
 
-        <label htmlFor="atriCarta2">
+        <label htmlFor="cardAttr2">
           Attr02
           <input
             type="number"
-            name="atriCarta2"
+            name="cardAttr2"
             data-testid="attr2-input"
-            //    onChange={ this.fChange }
-          //  value={ atriCarta2 }
+            onChange={ onInputChange }
+            value={ cardAttr2 }
           />
         </label>
 
-        <label htmlFor="atriCarta3">
+        <label htmlFor="cardAttr3">
           Attr03
           <input
             type="number"
-            name="atriCarta3"
+            name="cardAttr3"
             data-testid="attr3-input"
-            // onChange={ this.fChange }
-            // value={ atriCarta3 }
+            onChange={ onInputChange }
+            value={ cardAttr3 }
           />
         </label>
 
-        <label htmlFor="image">
+        <label htmlFor="cardImage">
           Imagem
           <input
             type="text"
-            name="image"
+            name="cardImage"
             data-testid="image-input"
-            //            onChange={ this.fChange }
-            //          value={ image }
+            onChange={ onInputChange }
+            value={ cardImage }
           />
         </label>
 
-        <label htmlFor="rare">
+        <label htmlFor="cardRare">
           Raridade
-          <select type="select" name="rare" data-testid="rare-input">
+          <select
+            type="select"
+            name="cardRare"
+            data-testid="rare-input"
+            onChange={ onInputChange }
+            value={ cardRare }
+          >
             <option>normal</option>
             <option>raro</option>
             <option>muito raro</option>
           </select>
         </label>
 
-        <label htmlFor="trunfo">
+        <label htmlFor="cardTrunfo">
           Super Trybe Trunfo
           <input
             type="checkbox"
             name="trunfo"
             data-testid="trunfo-input"
+            onChange={ onInputChange }
+            checked={ cardTrunfo }
           />
         </label>
 
@@ -153,7 +166,8 @@ class Form extends React.Component {
           name="button"
           data-testid="save-button"
           type="submit"
-          disabled
+          disabled={ isSaveButtonDisabled }
+          onClick={ onSaveButtonClick }
         >
           Salvar
         </button>
