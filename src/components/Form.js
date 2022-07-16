@@ -154,16 +154,16 @@ class Form extends React.Component {
         { hasTrunfo === true ? (
           <p data-testid="trunfo-input">Você já tem um Super Trunfo em seu baralho</p>
         ) : (
-        <label htmlFor="cardTrunfo">
-          Super Trybe Trunfo
-          <input
-            type="checkbox"
-            name="cardTrunfo"
-            data-testid="trunfo-input"
-            onChange={ onInputChange }
-            checked={ cardTrunfo }
-          />
-        </label>
+          <label htmlFor="cardTrunfo">
+            Super Trybe Trunfo
+            <input
+              type="checkbox"
+              name="cardTrunfo"
+              data-testid="trunfo-input"
+              onChange={ onInputChange }
+              checked={ cardTrunfo }
+            />
+          </label>
         )}
 
         <button
