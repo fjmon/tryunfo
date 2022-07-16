@@ -73,6 +73,7 @@ class App extends React.Component {
       <div>
         <h1>Tryunfo</h1>
         <Form
+          onInputChange={ this.onInputChange }
           cardName={ cardName }
           cardDescription={ cardDescription }
           cardAttr1={ cardAttr1 }
@@ -82,7 +83,6 @@ class App extends React.Component {
           cardRare={ cardRare }
           cardTrunfo={ cardTrunfo }
           isSaveButtonDisabled={ isSaveButtonDisabled }
-          onInputChange={ this.onInputChange }
         />
         <Card
           cardName={ cardName }
