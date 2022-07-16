@@ -9,14 +9,16 @@ class App extends React.Component {
     this.state = {
       cardName: '',
       cardDescription: '',
-      cardAttr1: '',
-      cardAttr2: '',
-      cardAttr3: '',
+      cardAttr1: '0',
+      cardAttr2: '0',
+      cardAttr3: '0',
       cardImage: '',
-      cardRare: '',
+      cardRare: 'normal',
       cardTrunfo: false,
       isSaveButtonDisabled: true,
+      savedCads: [],
     };
+    this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
   }
 
   onInputChange = ({ target }) => {
@@ -25,10 +27,24 @@ class App extends React.Component {
     this.setState({ [name]: value }, this.valBotSalvar);
   }
 
+  onSaveButtonClick = (event) => {
+    event.preventDefault();
+
+    const card = { ...this.state };
+
+    this.setState((atual) => ({
+      cardName: '',
+      cardDescription: '',
+      cardAttr1: '0',
+      cardAttr2: '0',
+      cardAttr3: '0',
+      cardImage: '',
+      cardRare: 'normal',
+      saveCards: [...atual.saveCards, card],
+    }));
+  }
+
   valBotSalvar() {
-    const min = 0;
-    const max = 90;
-    const somaTotal = 210;
     const {
       cardName,
       cardDescription,
@@ -38,6 +54,9 @@ class App extends React.Component {
       cardImage,
       cardRare,
     } = this.state;
+    const min = 0;
+    const max = 90;
+    const somaTotal = 210;
     const soma = Number(cardAttr1) + Number(cardAttr2) + Number(cardAttr3);
     if ((cardName.length
       && cardDescription.length
@@ -74,6 +93,7 @@ class App extends React.Component {
         <h1>Tryunfo</h1>
         <Form
           onInputChange={ this.onInputChange }
+          onSaveButtonClick={ this.onSaveButtonClick }
           cardName={ cardName }
           cardDescription={ cardDescription }
           cardAttr1={ cardAttr1 }
