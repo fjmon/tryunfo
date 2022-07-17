@@ -17,7 +17,7 @@ class App extends React.Component {
       cardTrunfo: false,
       hasTrunfo: false,
       isSaveButtonDisabled: true,
-      savedCads: [],
+      saveCards: [],
     };
     this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
   }
