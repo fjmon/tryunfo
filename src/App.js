@@ -7,123 +7,178 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      cardName: '',
-      cardDescription: '',
-      cardAttr1: '0',
-      cardAttr2: '0',
-      cardAttr3: '0',
-      cardImage: '',
-      cardRare: 'normal',
-      cardTrunfo: false,
-      hasTrunfo: false,
-      isSaveButtonDisabled: true,
-      saveCards: [],
+      name: '',
+      description: '',
+      attr1: '',
+      attr2: '',
+      attr3: '',
+      image: '',
+      rare: '',
+      trunfo: false,
+      nCard: [],
     };
-    this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
   }
 
-  onInputChange = ({ target }) => {
+  verifAttr = () => {
+    const { attr1, attr2, attr3 } = this.state;
+    const max = 90;
+    return [attr1, attr2, attr3].every((attr) => attr >= 0 && attr <= max);
+  }
+
+  handleNewCard = ({ target }) => {
     const { name } = target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    this.setState({ [name]: value }, this.valBotSalvar);
+    this.setState({ [name]: value });
   }
 
-  onSaveButtonClick = (event) => {
-    event.preventDefault();
-    const card = { ...this.state };
-    if (card.cardTrunfo === true) {
-      this.setState({
-        hasTrunfo: true });
+  somaAttr = () => {
+    const { attr1, attr2, attr3 } = this.state;
+    const max = 210;
+    if (this.verifAttr()) {
+      const soma = [attr1, attr2, attr3]
+        .reduce((acc, curr) => acc + parseInt(curr, 10), 0);
+      return (soma <= max);
     }
-
-    this.setState((atual) => ({
-      cardName: '',
-      cardDescription: '',
-      cardAttr1: '0',
-      cardAttr2: '0',
-      cardAttr3: '0',
-      cardImage: '',
-      cardRare: 'normal',
-      saveCards: [...atual.saveCards, card],
-    }));
   }
 
-  valBotSalvar() {
-    const {
-      cardName,
-      cardDescription,
-      cardAttr1,
-      cardAttr2,
-      cardAttr3,
-      cardImage,
-      cardRare,
-    } = this.state;
-    const min = 0;
-    const max = 90;
-    const somaTotal = 210;
-    const soma = Number(cardAttr1) + Number(cardAttr2) + Number(cardAttr3);
-    if ((cardName.length
-      && cardDescription.length
-      && cardImage.length
-      && cardRare.length !== 0)
-      && Number(cardAttr1) >= min
-      && Number(cardAttr2) >= min
-      && Number(cardAttr3) >= min
-      && Number(cardAttr2) <= max
-      && Number(cardAttr3) <= max
-      && Number(cardAttr1) <= max
-      && (soma <= somaTotal)) {
-      this.setState({ isSaveButtonDisabled: false });
-    } else {
-      this.setState({ isSaveButtonDisabled: true });
+  isSaveButtonDisabled = () => {
+    const { name, description, attr1, attr2, attr3, image } = this.state;
+    const inputVazio = !name || !description || !image;
+    const attrVazio = !attr1 || !attr2 || !attr3;
+    return !!((inputVazio || attrVazio || !(this.somaAttr())));
+  }
+
+  adicCard = () => {
+    const novoCard = this.state;
+    this.setState((prev) => ({
+      name: '',
+      description: '',
+      attr1: '0',
+      attr2: '0',
+      attr3: '0',
+      image: '',
+      rare: '',
+      trunfo: false,
+      nCard: [...prev.nCard, novoCard],
+      nameFilter: '',
+      rareFilter: '',
     }
+    ));
+  }
+
+  hasTrunfo = () => {
+    const { nCard } = this.state;
+    return nCard.some(({ trunfo }) => trunfo === true);
+  }
+
+  onSaveButtonClick = (elem) => {
+    elem.preventDefault();
+    this.adicCard();
+  }
+
+  filtra = ({ target }, name) => {
+    const value = (target.value === 'todas') ? '' : target.value;
+    this.setState({ [name]: value });
+  }
+
+  delet = (name) => {
+    const { nCard } = this.state;
+    this.setState({
+      nCard: nCard.filter((card) => card.name !== name),
+    });
   }
 
   render() {
     const {
-      cardName,
-      cardDescription,
-      cardAttr1,
-      cardAttr2,
-      cardAttr3,
-      cardImage,
-      cardRare,
-      cardTrunfo,
-      hasTrunfo,
-      isSaveButtonDisabled,
+      name,
+      description,
+      attr1,
+      attr2,
+      attr3,
+      image,
+      rare,
+      trunfo,
+      nCard,
+      nameFilter,
+      rareFilter,
     } = this.state;
 
     return (
       <div>
         <h1>Tryunfo</h1>
         <Form
-          onInputChange={ this.onInputChange }
+          cardName={ name }
+          cardDescription={ description }
+          cardAttr1={ attr1 }
+          cardAttr2={ attr2 }
+          cardAttr3={ attr3 }
+          cardImage={ image }
+          cardRare={ rare }
+          cardTrunfo={ trunfo }
+          hasTrunfo={ this.hasTrunfo() }
+          isSaveButtonDisabled={ this.isSaveButtonDisabled() }
+          onInputChange={ this.handleNewCard }
           onSaveButtonClick={ this.onSaveButtonClick }
-          cardName={ cardName }
-          cardDescription={ cardDescription }
-          cardAttr1={ cardAttr1 }
-          cardAttr2={ cardAttr2 }
-          cardAttr3={ cardAttr3 }
-          cardImage={ cardImage }
-          cardRare={ cardRare }
-          cardTrunfo={ cardTrunfo }
-          hasTrunfo={ hasTrunfo }
-          isSaveButtonDisabled={ isSaveButtonDisabled }
         />
         <Card
-          cardName={ cardName }
-          cardDescription={ cardDescription }
-          cardAttr1={ cardAttr1 }
-          cardAttr2={ cardAttr2 }
-          cardAttr3={ cardAttr3 }
-          cardImage={ cardImage }
-          cardRare={ cardRare }
-          cardTrunfo={ cardTrunfo }
+          cardName={ name }
+          cardDescription={ description }
+          cardAttr1={ attr1 }
+          cardAttr2={ attr2 }
+          cardAttr3={ attr3 }
+          cardImage={ image }
+          cardRare={ rare }
+          cardTrunfo={ trunfo }
         />
+        <label htmlFor="name-filter">
+          Buscar carta
+          {' '}
+          <input
+            data-testid="name-filter"
+            placeholder="Nome da carta"
+            onChange={ (elem) => this.filtra(elem, 'nameFilter') }
+            type="text"
+            id="name-filter"
+          />
+        </label>
+        <select
+          data-testid="rare-filter"
+          onChange={ (elem) => this.filtra(elem, 'rareFilter') }
+        >
+          <option>todas</option>
+          <option>normal</option>
+          <option>raro</option>
+          <option>muito raro</option>
+        </select>
 
+        <ul>
+          { nCard.filter((card) => ((rareFilter === 'raro')
+            ? card.rare === rareFilter : card.rare.includes(rareFilter)))
+            .filter((card) => card.name.includes(nameFilter)).map((card) => (
+              <div key={ card.name }>
+                <Card
+                  cardName={ card.name }
+                  cardDescription={ card.description }
+                  cardAttr1={ card.attr1 }
+                  cardAttr2={ card.attr2 }
+                  cardAttr3={ card.attr3 }
+                  cardImage={ card.image }
+                  cardRare={ card.rare }
+                  cardTrunfo={ card.trunfo }
+                />
+                <button
+                  data-testid="delete-button"
+                  type="button"
+                  onClick={ () => this.delet(card.name) }
+                >
+                  Excluir
+                </button>
+              </div>
+            ))}
+        </ul>
       </div>
     );
   }
 }
-
+// toto
 export default App;
